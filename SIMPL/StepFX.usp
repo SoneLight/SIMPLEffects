@@ -1,0 +1,135 @@
+/*******************************************************************************************
+  SIMPL+ Module Information
+  (Fill in comments below)
+*******************************************************************************************/
+/*
+Dealer Name:
+System Name:
+System Number:
+Programmer: Tim
+Comments:
+*/
+
+/*******************************************************************************************
+  Compiler Directives
+  (Uncomment and declare compiler directives as needed)
+*******************************************************************************************/
+#SYMBOL_NAME "StepFX"
+// #HINT ""
+#CATEGORY "12" 
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+#USER_SIMPLSHARP_LIBRARY "SIMPLEffects"
+
+/*******************************************************************************************
+  DIGITAL, ANALOG and SERIAL INPUTS and OUTPUTS
+  (Uncomment and declare inputs and outputs as needed)
+*******************************************************************************************/
+ANALOG_OUTPUT value0;
+ANALOG_OUTPUT value45;
+ANALOG_OUTPUT value90;
+ANALOG_OUTPUT value135;
+ANALOG_OUTPUT value180;
+ANALOG_OUTPUT value225;
+ANALOG_OUTPUT value270;
+ANALOG_OUTPUT value315;
+
+DIGITAL_OUTPUT running;
+
+ANALOG_INPUT setMaxValue;
+ANALOG_INPUT setMinValue;
+ANALOG_INPUT setDuration;
+ANALOG_INPUT setPhase;
+ANALOG_INPUT setWidth; 
+ANALOG_INPUT setAttack;
+ANALOG_INPUT setDecay;                    
+
+DIGITAL_INPUT start;
+DIGITAL_INPUT stop;
+
+
+INTEGER_PARAMETER maxValue;
+INTEGER_PARAMETER minValue;
+INTEGER_PARAMETER duration;
+INTEGER_PARAMETER phase;
+INTEGER_PARAMETER width;
+INTEGER_PARAMETER attack;
+INTEGER_PARAMETER decay;
+
+
+StepFX module;
+
+eventhandler ValuesChangedHandler(StepFX sender, EffectValueEventArgs values)
+{
+	value0 = values.values[0];
+	value45 = values.values[1];
+	value90 = values.values[2];
+	value135 = values.values[3];
+	value180 = values.values[4];
+	value225 = values.values[5];
+	value270 = values.values[6];
+	value315 = values.values[7];			
+}
+
+eventhandler RunningChangedHandler(SinFX sender, RunningEventArgs value)
+{
+	running = value.running;		
+}
+
+         
+push start
+{
+	module.Start();
+}
+
+push stop
+{
+	module.Stop();
+}
+
+change setMaxValue
+{
+	module.setMaxValue(setMaxValue);	
+}
+
+change setMinValue
+{
+	module.setMinValue(setMinValue);	
+}
+
+change setDuration 
+{
+	module.setDuration(setDuration);	
+}
+
+change setPhase 
+{
+	module.setPhase(setPhase);	
+}
+   
+change setWidth 
+{
+	module.setWidth(setWidth);	
+}
+
+change setAttack 
+{
+	module.setAttack(setAttack);	
+}
+
+change setDecay 
+{
+	module.setDecay(setDecay);	
+}
+
+
+function Main()
+{		
+	RegisterEvent(module, ValuesChanged, ValuesChangedHandler);
+	RegisterEvent(module, RunningChanged, RunningChangedHandler);
+
+	module.Initialize(phase, duration, maxValue, minValue, width, attack, decay);
+}
+
+

@@ -4,16 +4,14 @@ using Crestron.SimplSharp;                          				// For Basic SIMPL# Clas
 
 namespace SIMPLEffects
 {
-    public class Ramp : Effect
+    public class RampMinusFX : Effect
     {
-
-        public Ramp()
-        {
-        }
-
         protected override int getPhaseValue(float phase)
         {
-            return minValue + (int)((maxValue - minValue) * phase);
+            if (phase < width)
+                return maxValue - (int)((maxValue - minValue) * (phase / width));
+            else
+                return minValue;
         }
     }
 }
